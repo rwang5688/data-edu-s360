@@ -1,2 +1,2 @@
-# s360
-s360 templates and helper scripts
+# s360-workshop
+s360 workshop templates and helper scripts
