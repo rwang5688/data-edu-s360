@@ -51,12 +51,12 @@ Resources:
         Id: S3 Put Object Policy
         Version: 2012-10-17
         Statement:
-          - Sid: Require SSE-KMS Encryption
+          - Sid: Deny SSE-S3
             Action:
               - s3:PutObject
             Condition:
-              StringNotEquals:
-                's3:x-amz-server-side-encryption': 'aws:kms'
+              StringEquals:
+                's3:x-amz-server-side-encryption': 'AES256'
             Effect: Deny
             Principal: '*'
             Resource:
@@ -104,12 +104,12 @@ Resources:
         Id: S3 Put Object Policy
         Version: 2012-10-17
         Statement:
-          - Sid: Require SSE-KMS Encryption
+          - Sid: Deny SSE-S3
             Action:
               - s3:PutObject
             Condition:
-              StringNotEquals:
-                's3:x-amz-server-side-encryption': 'aws:kms'
+              StringEquals:
+                's3:x-amz-server-side-encryption': 'AES256'
             Effect: Deny
             Principal: '*'
             Resource:
@@ -157,12 +157,12 @@ Resources:
         Id: S3 Put Object Policy
         Version: 2012-10-17
         Statement:
-          - Sid: Require SSE-KMS Encryption
+          - Sid: Deny SSE-S3
             Action:
               - s3:PutObject
             Condition:
-              StringNotEquals:
-                's3:x-amz-server-side-encryption': 'aws:kms'
+              StringEquals:
+                's3:x-amz-server-side-encryption': 'AES256'
             Effect: Deny
             Principal: '*'
             Resource:
