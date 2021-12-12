@@ -30,8 +30,10 @@ Resources:
       PubliclyAccessible: 'false'
       StorageType: gp2
       BackupRetentionPeriod: '3'
-      MasterUsername: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/username}}'
-      MasterUserPassword: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/password}}'
+      MasterUsername:
+        Fn::Sub: '{{resolve:secretsmanager:${MyRDSSecret}::username}}'
+      MasterUserPassword:
+        Fn::Sub: '{{resolve:secretsmanager:${MyRDSSecret}::password}}'
       PreferredBackupWindow: 04:00-04:30
       PreferredMaintenanceWindow: sun:05:20-sun:05:50
       DBName: demosis
