@@ -15,7 +15,7 @@ Resources:
       Name: /s360/lms-demo/state
       Type: "String"
       Value: !Sub
-      - '{"base_url":"ee-assets-prod-us-east-1.s3.amazonaws.com/modules/f7ff818991a14cfb80e2617aad4431d1/v1/mockdata/lms_demo","version": "v1", "current_date": "2014-08-18", "perform_initial_load": "1","target_bucket":"${TargetBucket}", "base_s3_prefix":"lmsapi"}'
+      - '{"base_url":"ee-assets-prod-${AWS::Region}.s3.amazonaws.com/modules/f7ff818991a14cfb80e2617aad4431d1/v1/mockdata/lms_demo","version": "v1", "current_date": "2014-08-18", "perform_initial_load": "1","target_bucket":"${TargetBucket}", "base_s3_prefix":"lmsapi"}'
       - { TargetBucket: !Ref S3RawBucketName }
       Description: SSM Parameter for mock LMS integration.
 
@@ -65,7 +65,7 @@ Resources:
       MemorySize: "256"
       Timeout: "600"
       Code:
-        S3Bucket: "ee-assets-prod-us-east-1"
+        S3Bucket: !Sub "ee-assets-prod-${AWS::Region}"
         S3Key: "modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/s360-fetch-s3-data.zip"
 
 
@@ -141,7 +141,7 @@ Resources:
       MemorySize: "256"
       Timeout: "600"
       Code:
-        S3Bucket: "ee-assets-prod-us-east-1"
+        S3Bucket: !Sub "ee-assets-prod-${AWS::Region}"
         S3Key: "modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/s360-fetch-lmsapi.zip"
 
   CloudwatchEventRule:

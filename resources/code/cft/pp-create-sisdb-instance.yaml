@@ -127,7 +127,7 @@ Resources:
         - python3.6
         - python3.7
       Content:
-        S3Bucket: ee-assets-prod-us-east-1
+        S3Bucket: !Sub ee-assets-prod-${AWS::Region}
         S3Key: "modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/mysql_boto3_layer.zip"
       Description: This layer provide mysql access
       LayerName: s360-mysql-layer
@@ -190,7 +190,7 @@ Resources:
       Layers:
         - !Ref MyLayer
       Code:
-        S3Bucket: ee-assets-prod-us-east-1
+        S3Bucket: !Sub ee-assets-prod-${AWS::Region}
         S3Key: modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/s360-load-sisdb.zip 
       VpcConfig:
         SecurityGroupIds:
