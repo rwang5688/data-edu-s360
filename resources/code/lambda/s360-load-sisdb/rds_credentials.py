@@ -27,11 +27,11 @@ import json
 
 def get_secret():
 
+    session = boto3.session.Session()
+    region_name = session.region_name
     secret_name = "/s360/demoSISDB/credentials"
-    region_name = "us-east-1"
 
     # Create a Secrets Manager client
-    session = boto3.session.Session()
     client = session.client(
         service_name='secretsmanager',
         region_name=region_name

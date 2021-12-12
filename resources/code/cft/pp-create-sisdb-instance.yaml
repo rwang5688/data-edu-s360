@@ -30,8 +30,10 @@ Resources:
       PubliclyAccessible: 'false'
       StorageType: gp2
       BackupRetentionPeriod: '3'
-      MasterUsername: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/username}}'
-      MasterUserPassword: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/password}}'
+      MasterUsername:
+        Fn::Sub: '{{resolve:secretsmanager:${MyRDSSecret}::username}}'
+      MasterUserPassword:
+        Fn::Sub: '{{resolve:secretsmanager:${MyRDSSecret}::password}}'
       PreferredBackupWindow: 04:00-04:30
       PreferredMaintenanceWindow: sun:05:20-sun:05:50
       DBName: demosis
@@ -46,7 +48,6 @@ Resources:
       VPCSecurityGroups:
       - Ref: sgRDSDemoSISDB
       StorageEncrypted: true
-      DeletionProtection: true
 
   sgRDSDemoSISDB:
     Type: AWS::EC2::SecurityGroup
@@ -57,11 +58,10 @@ Resources:
   egresssisdbsg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgRDSDemoSISDB
       IpProtocol: "-1"
-      DestinationSecurityGroupId: !Ref sgRDSDemoSISDB
+      CidrIp: 0.0.0.0/0
   ingress1sisdbsg:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -85,11 +85,10 @@ Resources:
   egressec2instancesg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgLambdaFns
       IpProtocol: "-1"
-      DestinationSecurityGroupId: !Ref sgLambdaFns
+      CidrIp: 0.0.0.0/0
 
 
   dbsubnetdefaultsisdemovpc:
@@ -127,7 +126,7 @@ Resources:
         - python3.6
         - python3.7
       Content:
-        S3Bucket: ee-assets-prod-us-east-1
+        S3Bucket: !Sub ee-assets-prod-${AWS::Region}
         S3Key: "modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/mysql_boto3_layer.zip"
       Description: This layer provide mysql access
       LayerName: s360-mysql-layer
@@ -190,7 +189,7 @@ Resources:
       Layers:
         - !Ref MyLayer
       Code:
-        S3Bucket: ee-assets-prod-us-east-1
+        S3Bucket: !Sub ee-assets-prod-${AWS::Region}
         S3Key: modules/f7ff818991a14cfb80e2617aad4431d1/v1/lambda/s360-load-sisdb.zip 
       VpcConfig:
         SecurityGroupIds:
