@@ -48,7 +48,6 @@ Resources:
       VPCSecurityGroups:
       - Ref: sgRDSDemoSISDB
       StorageEncrypted: true
-      DeletionProtection: true
 
   sgRDSDemoSISDB:
     Type: AWS::EC2::SecurityGroup
