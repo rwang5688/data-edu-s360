@@ -59,11 +59,10 @@ Resources:
   egresssisdbsg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgRDSDemoSISDB
       IpProtocol: "-1"
-      DestinationSecurityGroupId: !Ref sgRDSDemoSISDB
+      CidrIp: 0.0.0.0/0
   ingress1sisdbsg:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -87,11 +86,10 @@ Resources:
   egressec2instancesg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgLambdaFns
       IpProtocol: "-1"
-      DestinationSecurityGroupId: !Ref sgLambdaFns
+      CidrIp: 0.0.0.0/0
 
 
   dbsubnetdefaultsisdemovpc:
