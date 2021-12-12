@@ -28,8 +28,8 @@ import json
 def get_secret():
 
     session = boto3.session.Session()
-    secret_name = "/s360/demoSISDB/credentials"
     region_name = session.region_name
+    secret_name = "/s360/demoSISDB/credentials"
 
     # Create a Secrets Manager client
     client = session.client(
