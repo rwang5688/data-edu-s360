@@ -30,8 +30,8 @@ Resources:
       PubliclyAccessible: 'false'
       StorageType: gp2
       BackupRetentionPeriod: '3'
-      MasterUsername: "admin"
-      MasterUserPassword: "master123"
+      MasterUsername: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/username}}'
+      MasterUserPassword: '{{resolve:secretsmanager:/s360/demoSISDB/credentials/password}}'
       PreferredBackupWindow: 04:00-04:30
       PreferredMaintenanceWindow: sun:05:20-sun:05:50
       DBName: demosis
@@ -45,6 +45,8 @@ Resources:
         Ref: dbParamGroupMySQL
       VPCSecurityGroups:
       - Ref: sgRDSDemoSISDB
+      StorageEncrypted: true
+      DeletionProtection: true
 
   sgRDSDemoSISDB:
     Type: AWS::EC2::SecurityGroup
@@ -55,10 +57,11 @@ Resources:
   egresssisdbsg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
+      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgRDSDemoSISDB
       IpProtocol: "-1"
-      CidrIp: 0.0.0.0/0
+      DestinationSecurityGroupId: !Ref sgRDSDemoSISDB
   ingress1sisdbsg:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -82,10 +85,11 @@ Resources:
   egressec2instancesg:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
+      Description: "Prevent default outbound egress rule"
       GroupId:
         Ref: sgLambdaFns
       IpProtocol: "-1"
-      CidrIp: 0.0.0.0/0
+      DestinationSecurityGroupId: !Ref sgLambdaFns
 
 
   dbsubnetdefaultsisdemovpc:
@@ -179,6 +183,7 @@ Resources:
       FunctionName: s360-load-sisdb
       Handler: "lambda_function.lambda_handler"
       Role: !GetAtt S360LambdaRole.Arn
+      ReservedConcurrentExecutions: 1
       Runtime: "python3.8"
       MemorySize: "512"
       Timeout: "900"
