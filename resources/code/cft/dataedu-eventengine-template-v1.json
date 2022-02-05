@@ -1,0 +1,1247 @@
+{
+  "Parameters": {
+    "EETeamID": {
+      "Type": "String",
+      "Default": "12938128947124",
+      "Description": "Unique Event Engine per-Team GUID."
+    }
+  },
+  "Resources": {
+    "dataeduDMSSourceRole55726A42": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "dms.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "s360-dms-source-execution-role"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceRole/Resource"
+      }
+    },
+    "dataeduDMSSourceRoleDefaultPolicy4D64F344": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "dataeduKMS6B3AB969",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "dataEDURDSSecretA0904793"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "dataeduDMSSourceRoleDefaultPolicy4D64F344",
+        "Roles": [
+          {
+            "Ref": "dataeduDMSSourceRole55726A42"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceRole/DefaultPolicy/Resource"
+      }
+    },
+    "dataeduDMSTargetRoleFF1FC64E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "s360-dms-target-execution-role"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/Resource"
+      }
+    },
+    "dataeduDMSTargetRoleDefaultPolicy58C5A871": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "dataeduRawBucket945ADDC3",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "dataeduRawBucket945ADDC3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:Decrypt"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "dataeduKMS6B3AB969",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "dataeduKMS6B3AB969",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "dataeduDMSTargetRoleDefaultPolicy58C5A871",
+        "Roles": [
+          {
+            "Ref": "dataeduDMSTargetRoleFF1FC64E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/DefaultPolicy/Resource"
+      }
+    },
+    "dataeduKMS6B3AB969": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
+        "EnableKeyRotation": false,
+        "PendingWindowInDays": 7
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduKMS/Resource"
+      }
+    },
+    "dataeduKMSAlias357469DC": {
+      "Type": "AWS::KMS::Alias",
+      "Properties": {
+        "AliasName": "alias/s360-key",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "dataeduKMS6B3AB969",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduKMS/Alias/Resource"
+      }
+    },
+    "dataeduRawBucket945ADDC3": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": {
+                  "Fn::GetAtt": [
+                    "dataeduKMS6B3AB969",
+                    "Arn"
+                  ]
+                },
+                "SSEAlgorithm": "aws:kms"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "s360-raw-",
+              {
+                "Ref": "EETeamID"
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRawBucket/Resource"
+      }
+    },
+    "dataeduCuratedBucket2AB663B1": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": {
+                  "Fn::GetAtt": [
+                    "dataeduKMS6B3AB969",
+                    "Arn"
+                  ]
+                },
+                "SSEAlgorithm": "aws:kms"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "s360-curated-",
+              {
+                "Ref": "EETeamID"
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduCuratedBucket/Resource"
+      }
+    },
+    "dataeduResultsBucketBC9A3373": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": {
+                  "Fn::GetAtt": [
+                    "dataeduKMS6B3AB969",
+                    "Arn"
+                  ]
+                },
+                "SSEAlgorithm": "aws:kms"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "s360-results-",
+              {
+                "Ref": "EETeamID"
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduResultsBucket/Resource"
+      }
+    },
+    "dataeduVPCF752A41B": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/Resource"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1Subnet4EC9E56E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/24",
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "s360-public-subnet-"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/Subnet"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1RouteTable87268B0D": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/RouteTable"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1RouteTableAssociation3A8B2CFB": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet1RouteTable87268B0D"
+        },
+        "SubnetId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet1Subnet4EC9E56E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/RouteTableAssociation"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1DefaultRoute93373AF4": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet1RouteTable87268B0D"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "dataeduVPCIGW1F5E0B85"
+        }
+      },
+      "DependsOn": [
+        "dataeduVPCVPCGW8A53B470"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/DefaultRoute"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1EIP1544BFB0": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/EIP"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet1NATGateway75DAC20B": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet1Subnet4EC9E56E"
+        },
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "dataeduVPCs360publicsubnetSubnet1EIP1544BFB0",
+            "AllocationId"
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet1/NATGateway"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2SubnetCAAA02D2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.1.0/24",
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "s360-public-subnet-"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/Subnet"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2RouteTableB204934D": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/RouteTable"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2RouteTableAssociation7E39BEE0": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet2RouteTableB204934D"
+        },
+        "SubnetId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet2SubnetCAAA02D2"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/RouteTableAssociation"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2DefaultRoute2CB0779B": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet2RouteTableB204934D"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "dataeduVPCIGW1F5E0B85"
+        }
+      },
+      "DependsOn": [
+        "dataeduVPCVPCGW8A53B470"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/DefaultRoute"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2EIP72916443": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/EIP"
+      }
+    },
+    "dataeduVPCs360publicsubnetSubnet2NATGateway569370FB": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet2SubnetCAAA02D2"
+        },
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "dataeduVPCs360publicsubnetSubnet2EIP72916443",
+            "AllocationId"
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-subnet-Subnet2/NATGateway"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet1SubnetF59FFF6E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.2.0/24",
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "s360-private-subnet-"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1/Subnet"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet1RouteTableC30B9799": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1/RouteTable"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet1RouteTableAssociationBB43FDDA": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet1RouteTableC30B9799"
+        },
+        "SubnetId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet1SubnetF59FFF6E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1/RouteTableAssociation"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet1DefaultRouteAEE05EBB": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet1RouteTableC30B9799"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet1NATGateway75DAC20B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet1/DefaultRoute"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet2Subnet8420F005": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.3.0/24",
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "s360-private-subnet-"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2/Subnet"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet2RouteTableB6D3C2EA": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2/RouteTable"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet2RouteTableAssociation61F70534": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet2RouteTableB6D3C2EA"
+        },
+        "SubnetId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet2Subnet8420F005"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2/RouteTableAssociation"
+      }
+    },
+    "dataeduVPCs360privatesubnetSubnet2DefaultRouteFD1E7650": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "dataeduVPCs360privatesubnetSubnet2RouteTableB6D3C2EA"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "dataeduVPCs360publicsubnetSubnet2NATGateway569370FB"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-subnet-Subnet2/DefaultRoute"
+      }
+    },
+    "dataeduVPCIGW1F5E0B85": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dataEDUstack/dataeduVPC"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/IGW"
+      }
+    },
+    "dataeduVPCVPCGW8A53B470": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        },
+        "InternetGatewayId": {
+          "Ref": "dataeduVPCIGW1F5E0B85"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduVPC/VPCGW"
+      }
+    },
+    "dataEDURDSSecretA0904793": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "GenerateSecretString": {
+          "ExcludeCharacters": ";",
+          "ExcludePunctuation": true,
+          "GenerateStringKey": "password",
+          "SecretStringTemplate": "{\"username\":\"admin\"}"
+        },
+        "Name": "s360-rds-secret2"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataEDURDSSecret/Resource"
+      }
+    },
+    "dataEDURDSSecretAttachment1F15340A": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "dataEDURDSSecretA0904793"
+        },
+        "TargetId": {
+          "Ref": "dataeduRDSInstance2BB1EFE2"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataEDURDSSecret/Attachment/Resource"
+      }
+    },
+    "dataeduRDSsg43029FA3": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "DataEDU RDS Instance security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/Resource"
+      }
+    },
+    "dataeduRDSsgfromdataEDUstackdataeduDMSsg5AC7632633092B2E3949": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "DMS to RDS (MySQL)",
+        "FromPort": 3309,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "dataeduRDSsg43029FA3",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "dataeduDMSsg5B5997DA",
+            "GroupId"
+          ]
+        },
+        "ToPort": 3309
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduDMSsg5AC76326:3309"
+      }
+    },
+    "dataeduDMSsg5B5997DA": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "DataEDU DMS Instance security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSsg/Resource"
+      }
+    },
+    "dataeduRDSInstanceSubnetGroupEBC78F3D": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for dataeduRDSInstance database",
+        "SubnetIds": [
+          {
+            "Ref": "dataeduVPCs360privatesubnetSubnet1SubnetF59FFF6E"
+          },
+          {
+            "Ref": "dataeduVPCs360privatesubnetSubnet2Subnet8420F005"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRDSInstance/SubnetGroup/Default"
+      }
+    },
+    "dataeduRDSInstance2BB1EFE2": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBInstanceClass": "db.m5.large",
+        "AllocatedStorage": "100",
+        "CopyTagsToSnapshot": true,
+        "DBSubnetGroupName": {
+          "Ref": "dataeduRDSInstanceSubnetGroupEBC78F3D"
+        },
+        "Engine": "mysql",
+        "EngineVersion": "8.0.26",
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "dataEDURDSSecretA0904793"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "dataEDURDSSecretA0904793"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "PubliclyAccessible": false,
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "dataeduRDSsg43029FA3",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRDSInstance/Resource"
+      }
+    },
+    "dataeduDMSSubnetGroup": {
+      "Type": "AWS::DMS::ReplicationSubnetGroup",
+      "Properties": {
+        "ReplicationSubnetGroupDescription": "s360-replication-subnet-group",
+        "SubnetIds": [
+          {
+            "Ref": "dataeduVPCs360privatesubnetSubnet1SubnetF59FFF6E"
+          },
+          {
+            "Ref": "dataeduVPCs360privatesubnetSubnet2Subnet8420F005"
+          }
+        ],
+        "ReplicationSubnetGroupIdentifier": "s360-replication-subnet-group"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSSubnetGroup"
+      }
+    },
+    "dataeduDMSInstance": {
+      "Type": "AWS::DMS::ReplicationInstance",
+      "Properties": {
+        "ReplicationInstanceClass": "dms.t2.small",
+        "ReplicationSubnetGroupIdentifier": {
+          "Ref": "dataeduDMSSubnetGroup"
+        },
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "dataeduDMSsg5B5997DA",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSInstance"
+      }
+    },
+    "dataeduDMSSourceEndpoint": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "source",
+        "EngineName": "mysql",
+        "MySqlSettings": {
+          "SecretsManagerAccessRoleArn": {
+            "Fn::GetAtt": [
+              "dataeduDMSSourceRole55726A42",
+              "Arn"
+            ]
+          },
+          "SecretsManagerSecretId": {
+            "Ref": "dataEDURDSSecretA0904793"
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceEndpoint"
+      }
+    },
+    "dataeduDMSTargetEndpoint": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "s3",
+        "S3Settings": {
+          "BucketName": {
+            "Fn::GetAtt": [
+              "dataeduRawBucket945ADDC3",
+              "Arn"
+            ]
+          },
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "dataeduDMSTargetRoleFF1FC64E",
+              "Arn"
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetEndpoint"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Ry2rDMBD8ltwVtUmg9zxKMIVinJBrWcvbVLEtGWmVEIz/vXrkRQo97ezsSJodTfmMv47gZMeiqseNLHm/IRA1W36rHAy0SGiYn3/1ElreF7rBMIs1140U5yiNaGB1a3n/gZELZd5IsKGJYGB2xvuFEzVSIBMaGIop73edCNwuX7Lclf66jStV0t1RoR3hFspkIvF3bm6tFhJIanUTB/Ce5aF8Aq2B8ARnlht59PB+cab8nh5fBcnJpZuTj+SnRUVsg8IZSee10a6LHv4lMrU3aMPiKAySbUHBHo0POfYXfUCpbMHskR7euwmeJwMzlc96BQQlWMyUJVACWVrp5ma1+ENcpQOrwm+FoLDzecfcntQPk9sLIVBVdVp6EwMr0GpnEv2Il1pVMpwbmNIV8oN9OU7e+GTGJ6ODlXJsnCLZIi9S/QXR5l3BiQIAAA=="
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
