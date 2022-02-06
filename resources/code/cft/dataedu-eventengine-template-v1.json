@@ -4,7 +4,7 @@
       "Type": "String",
       "Default": "12938128947124",
       "Description": "Unique Event Engine per-Team GUID."
-    }
+    },
   },
   "Resources": {
     "dataeduDMSSourceRole55726A42": {
@@ -106,6 +106,20 @@
           "Statement": [
             {
               "Action": [
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "dataeduKMS6B3AB969",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
                 "s3:DeleteObject*",
                 "s3:PutObject",
                 "s3:Abort*"
@@ -148,20 +162,6 @@
                   "Arn"
                 ]
               }
-            },
-            {
-              "Action": [
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "dataeduKMS6B3AB969",
-                  "Arn"
-                ]
-              }
             }
           ],
           "Version": "2012-10-17"
@@ -177,6 +177,66 @@
         "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/DefaultPolicy/Resource"
       }
     },
+    "dataeduSISImportRole61DAD9FC": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "s360-sis-import-lambda-execution-role"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduSISImportRole/Resource"
+      }
+    },
+    "dataeduSISImportRoleDefaultPolicy7294368E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "dataeduKMS6B3AB969",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "dataEDURDSSecretA0904793"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "dataeduSISImportRoleDefaultPolicy7294368E",
+        "Roles": [
+          {
+            "Ref": "dataeduSISImportRole61DAD9FC"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduSISImportRole/DefaultPolicy/Resource"
+      }
+    },
     "dataeduKMS6B3AB969": {
       "Type": "AWS::KMS::Key",
       "Properties": {
@@ -190,11 +250,7 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
+                      "arn:aws:iam::",
                       {
                         "Ref": "AWS::AccountId"
                       },
@@ -203,10 +259,12 @@
                   ]
                 }
               },
-              "Resource": "*"
+              "Resource": "*",
+              "Sid": "Enable IAM User Permissions"
             }
           ],
-          "Version": "2012-10-17"
+          "Version": "2012-10-17",
+          "Id": "key-consolepolicy-3"
         },
         "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
         "EnableKeyRotation": false,
@@ -797,12 +855,11 @@
       "Type": "AWS::SecretsManager::Secret",
       "Properties": {
         "GenerateSecretString": {
-          "ExcludeCharacters": ";",
           "ExcludePunctuation": true,
           "GenerateStringKey": "password",
           "SecretStringTemplate": "{\"username\":\"admin\"}"
         },
-        "Name": "s360-rds-secret2"
+        "Name": "s360-rds-secret3"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -844,12 +901,12 @@
         "aws:cdk:path": "dataEDUstack/dataeduRDSsg/Resource"
       }
     },
-    "dataeduRDSsgfromdataEDUstackdataeduDMSsg5AC7632633092B2E3949": {
+    "dataeduRDSsgfromdataEDUstackdataeduDMSsg5AC763263306C0846A2D": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
         "Description": "DMS to RDS (MySQL)",
-        "FromPort": 3309,
+        "FromPort": 3306,
         "GroupId": {
           "Fn::GetAtt": [
             "dataeduRDSsg43029FA3",
@@ -862,10 +919,34 @@
             "GroupId"
           ]
         },
-        "ToPort": 3309
+        "ToPort": 3306
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduDMSsg5AC76326:3309"
+        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduDMSsg5AC76326:3306"
+      }
+    },
+    "dataeduRDSsgfromdataEDUstackdataeduLambdasg780D38EA330617729916": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "SIS Import Lambda to RDS (MySQL)",
+        "FromPort": 3306,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "dataeduRDSsg43029FA3",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "dataeduLambdasg8559F486",
+            "GroupId"
+          ]
+        },
+        "ToPort": 3306
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduLambdasg780D38EA:3306"
       }
     },
     "dataeduDMSsg5B5997DA": {
@@ -885,6 +966,25 @@
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstack/dataeduDMSsg/Resource"
+      }
+    },
+    "dataeduLambdasg8559F486": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "DataEDU SIS Import Lambda Function security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "dataeduVPCF752A41B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstack/dataeduLambdasg/Resource"
       }
     },
     "dataeduRDSInstanceSubnetGroupEBC78F3D": {
@@ -1243,5 +1343,5 @@
         }
       ]
     }
-  }
+  },
 }
