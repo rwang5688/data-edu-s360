@@ -1,0 +1,25 @@
+{
+  "Resources": {
+    "dmsVpcRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole"
+        ],
+        "RoleName": "dms-vpc-role"
+      }
+    }
+  }
+}
