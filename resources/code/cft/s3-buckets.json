@@ -1,4 +1,50 @@
 {
+    "dataeduRawBucket945ADDC3": {
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "AccessControl": "Private",
+          "BucketEncryption": {
+            "ServerSideEncryptionConfiguration": [
+              {
+                "ServerSideEncryptionByDefault": {
+                  "KMSMasterKeyID": {
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
+                  },
+                  "SSEAlgorithm": "aws:kms"
+                }
+              }
+            ]
+          },
+          "BucketName": {
+            "Fn::Join": [
+              "",
+              [
+                "s360-raw-",
+                {
+                  "Ref": "EETeamID"
+                }
+              ]
+            ]
+          },
+          "PublicAccessBlockConfiguration": {
+            "BlockPublicAcls": "TRUE",
+            "BlockPublicPolicy": "TRUE",
+            "IgnorePublicAcls": "TRUE",
+            "RestrictPublicBuckets": "TRUE"            
+          },
+          "VersioningConfiguration": {
+            "Status": "Enabled"
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "dataEDUstack/dataeduRawBucket/Resource"
+        }
+    },
     "dataeduRawBucketPolicy": {
         "Type": "AWS::S3::BucketPolicy",
         "Properties": {
@@ -63,6 +109,52 @@
             }
         }
     },
+    "dataeduCuratedBucket2AB663B1": {
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "AccessControl": "Private",
+          "BucketEncryption": {
+            "ServerSideEncryptionConfiguration": [
+              {
+                "ServerSideEncryptionByDefault": {
+                  "KMSMasterKeyID": {
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
+                  },
+                  "SSEAlgorithm": "aws:kms"
+                }
+              }
+            ]
+          },
+          "BucketName": {
+            "Fn::Join": [
+              "",
+              [
+                "s360-curated-",
+                {
+                  "Ref": "EETeamID"
+                }
+              ]
+            ]
+          },
+          "PublicAccessBlockConfiguration": {
+            "BlockPublicAcls": "TRUE",
+            "BlockPublicPolicy": "TRUE",
+            "IgnorePublicAcls": "TRUE",
+            "RestrictPublicBuckets": "TRUE"            
+          },
+          "VersioningConfiguration": {
+            "Status": "Enabled"
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "dataEDUstack/dataeduCuratedBucket/Resource"
+        }
+    },
     "dataeduCuratedBucketPolicy": {
         "Type": "AWS::S3::BucketPolicy",
         "Properties": {
@@ -125,6 +217,52 @@
                     }
                 ]
             }
+        }
+    },
+    "dataeduResultsBucketBC9A3373": {
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "AccessControl": "Private",
+          "BucketEncryption": {
+            "ServerSideEncryptionConfiguration": [
+              {
+                "ServerSideEncryptionByDefault": {
+                  "KMSMasterKeyID": {
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
+                  },
+                  "SSEAlgorithm": "aws:kms"
+                }
+              }
+            ]
+          },
+          "BucketName": {
+            "Fn::Join": [
+              "",
+              [
+                "s360-results-",
+                {
+                  "Ref": "EETeamID"
+                }
+              ]
+            ]
+          },
+          "PublicAccessBlockConfiguration": {
+            "BlockPublicAcls": "TRUE",
+            "BlockPublicPolicy": "TRUE",
+            "IgnorePublicAcls": "TRUE",
+            "RestrictPublicBuckets": "TRUE"            
+          },
+          "VersioningConfiguration": {
+            "Status": "Enabled"
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "dataEDUstack/dataeduResultsBucket/Resource"
         }
     },
     "dataeduResultsBucketPolicy": {

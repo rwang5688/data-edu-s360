@@ -4,7 +4,7 @@
       "Type": "String",
       "Default": "12938128947124",
       "Description": "Unique Event Engine per-Team GUID."
-    },
+    }
   },
   "Resources": {
     "dataeduDMSSourceRole55726A42": {
@@ -291,9 +291,10 @@
         "aws:cdk:path": "dataEDUstack/dataeduKMS/Alias/Resource"
       }
     },
-    "dataeduRawBucket945ADDC3": {
+  "dataeduRawBucket945ADDC3": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
+        "AccessControl": "Private",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -319,6 +320,15 @@
               }
             ]
           ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": "TRUE",
+          "BlockPublicPolicy": "TRUE",
+          "IgnorePublicAcls": "TRUE",
+          "RestrictPublicBuckets": "TRUE"            
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Delete",
@@ -326,8 +336,8 @@
       "Metadata": {
         "aws:cdk:path": "dataEDUstack/dataeduRawBucket/Resource"
       }
-    },
-    "dataeduRawBucketPolicy": {
+  },
+  "dataeduRawBucketPolicy": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
           "Bucket": {
@@ -390,10 +400,11 @@
               ]
           }
       }
-    },
-    "dataeduCuratedBucket2AB663B1": {
+  },
+  "dataeduCuratedBucket2AB663B1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
+        "AccessControl": "Private",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -419,6 +430,15 @@
               }
             ]
           ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": "TRUE",
+          "BlockPublicPolicy": "TRUE",
+          "IgnorePublicAcls": "TRUE",
+          "RestrictPublicBuckets": "TRUE"            
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Delete",
@@ -426,8 +446,8 @@
       "Metadata": {
         "aws:cdk:path": "dataEDUstack/dataeduCuratedBucket/Resource"
       }
-    },
-    "dataeduCuratedBucketPolicy": {
+  },
+  "dataeduCuratedBucketPolicy": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
           "Bucket": {
@@ -490,10 +510,11 @@
               ]
           }
       }
-    },
-    "dataeduResultsBucketBC9A3373": {
+  },
+  "dataeduResultsBucketBC9A3373": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
+        "AccessControl": "Private",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -519,6 +540,15 @@
               }
             ]
           ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": "TRUE",
+          "BlockPublicPolicy": "TRUE",
+          "IgnorePublicAcls": "TRUE",
+          "RestrictPublicBuckets": "TRUE"            
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
         }
       },
       "UpdateReplacePolicy": "Delete",
@@ -526,8 +556,8 @@
       "Metadata": {
         "aws:cdk:path": "dataEDUstack/dataeduResultsBucket/Resource"
       }
-    },
-    "dataeduResultsBucketPolicy": {
+  },
+  "dataeduResultsBucketPolicy": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
           "Bucket": {
@@ -590,7 +620,7 @@
               ]
           }
       }
-    },
+  },
     "dataeduVPCF752A41B": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
