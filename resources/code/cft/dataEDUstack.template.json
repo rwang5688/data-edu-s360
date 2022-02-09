@@ -93,88 +93,13 @@
           ],
           "Version": "2012-10-17"
         },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        ],
         "RoleName": "s360-dms-target-execution-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/Resource"
-      }
-    },
-    "dataeduDMSTargetRoleDefaultPolicy58C5A871": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "dataeduKMS6B3AB969",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": [
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "dataeduRawBucket945ADDC3",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "dataeduRawBucket945ADDC3",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-                "kms:Decrypt"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "dataeduKMS6B3AB969",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "dataeduDMSTargetRoleDefaultPolicy58C5A871",
-        "Roles": [
-          {
-            "Ref": "dataeduDMSTargetRoleFF1FC64E"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/DefaultPolicy/Resource"
       }
     },
     "dataeduSISImportRole61DAD9FC": {
@@ -337,6 +262,15 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
             }
           ],
           "Version": "2012-10-17"
@@ -450,6 +384,15 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
             }
           ],
           "Version": "2012-10-17"
@@ -1376,11 +1319,9 @@
         "EndpointType": "target",
         "EngineName": "s3",
         "S3Settings": {
+          "BucketFolder": "sisdb",
           "BucketName": {
-            "Fn::GetAtt": [
-              "dataeduRawBucket945ADDC3",
-              "Arn"
-            ]
+            "Ref": "dataeduRawBucket945ADDC3"
           },
           "ServiceAccessRoleArn": {
             "Fn::GetAtt": [
@@ -1616,7 +1557,7 @@
         },
         "Description": "Lambda function that fetches a file from a URL and stores it in a S3 bucket",
         "FunctionName": "s360-fetch-s3-data",
-        "Handler": "lambda_function.lambda_handler",
+        "Handler": "lambda_handler.lambda_handler",
         "MemorySize": 256,
         "Runtime": "python3.7",
         "Timeout": 600
@@ -1672,7 +1613,7 @@
       "Properties": {
         "Description": "Invokes demo API on a scheduled basis",
         "Name": "lmsapi-sync-schedule-halfhourly",
-        "ScheduleExpression": "rate(2 minutes)",
+        "ScheduleExpression": "rate(1 minute)",
         "State": "ENABLED",
         "Targets": [
           {
