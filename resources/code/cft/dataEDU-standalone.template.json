@@ -1679,7 +1679,7 @@
         "Description": "Invokes demo API on a scheduled basis",
         "Name": "lmsapi-sync-schedule-halfhourly",
         "ScheduleExpression": "rate(1 minute)",
-        "State": "ENABLED",
+        "State": "DISABLED",
         "Targets": [
           {
             "Arn": {
