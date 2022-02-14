@@ -596,6 +596,70 @@
         "aws:cdk:path": "dataEDUstackEE/dataeduRawBucket/Resource"
       }
     },
+    "dataeduRawBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+          "Bucket": {
+              "Ref": "dataeduRawBucket945ADDC3"
+          },
+          "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Sid": "DenySSE-S3",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduRawBucket945ADDC3"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringEquals": {
+                              "s3:x-amz-server-side-encryption": "AES256"
+                          }
+                      }
+                  },
+                  {
+                      "Sid": "RequireKMSEncryption",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduRawBucket945ADDC3"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringNotLikeIfExists": {
+                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                                  "Fn::GetAtt": [
+                                      "dataeduKMS6B3AB969",
+                                      "Arn"
+                                  ]
+                              }
+                          }
+                      }
+                  }
+              ]
+          }
+      }
+  },
     "dataeduCuratedBucket2AB663B1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -641,6 +705,70 @@
         "aws:cdk:path": "dataEDUstackEE/dataeduCuratedBucket/Resource"
       }
     },
+    "dataeduCuratedBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+          "Bucket": {
+              "Ref": "dataeduCuratedBucket2AB663B1"
+          },
+          "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Sid": "DenySSE-S3",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduCuratedBucket2AB663B1"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringEquals": {
+                              "s3:x-amz-server-side-encryption": "AES256"
+                          }
+                      }
+                  },
+                  {
+                      "Sid": "RequireKMSEncryption",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduCuratedBucket2AB663B1"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringNotLikeIfExists": {
+                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                                  "Fn::GetAtt": [
+                                      "dataeduKMS6B3AB969",
+                                      "Arn"
+                                  ]
+                              }
+                          }
+                      }
+                  }
+              ]
+          }
+      }
+  },
     "dataeduResultsBucketBC9A3373": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -686,6 +814,70 @@
         "aws:cdk:path": "dataEDUstackEE/dataeduResultsBucket/Resource"
       }
     },
+    "dataeduResultsBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+          "Bucket": {
+              "Ref": "dataeduResultsBucketBC9A3373"
+          },
+          "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Sid": "DenySSE-S3",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduResultsBucketBC9A3373"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringEquals": {
+                              "s3:x-amz-server-side-encryption": "AES256"
+                          }
+                      }
+                  },
+                  {
+                      "Sid": "RequireKMSEncryption",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Action": "s3:PutObject",
+                      "Resource": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "arn:aws:s3:::",
+                                  {
+                                      "Ref": "dataeduResultsBucketBC9A3373"
+                                  },
+                                  "/*"
+                              ]
+                          ]
+                      },
+                      "Condition": {
+                          "StringNotLikeIfExists": {
+                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                                  "Fn::GetAtt": [
+                                      "dataeduKMS6B3AB969",
+                                      "Arn"
+                                  ]
+                              }
+                          }
+                      }
+                  }
+              ]
+          }
+      }
+  },
     "dataeduVPCF752A41B": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
