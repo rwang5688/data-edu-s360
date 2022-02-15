@@ -266,7 +266,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":function:s360-*"
+                    ":function:dataedu-*"
                   ]
                 ]
               }
@@ -449,7 +449,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":function:s360-*"
+                    ":function:dataedu-*"
                   ]
                 ]
               }
