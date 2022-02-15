@@ -523,7 +523,8 @@
               "Sid": "Enable IAM User Permissions"
             }
           ],
-          "Version": "2012-10-17"
+          "Version": "2012-10-17",
+          "Id": "key-consolepolicy-3"
         },
         "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
         "EnableKeyRotation": false,
@@ -634,7 +635,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },
@@ -749,7 +753,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },
@@ -864,7 +871,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },

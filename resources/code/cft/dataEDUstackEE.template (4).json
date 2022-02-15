@@ -7,6 +7,30 @@
     },
   },
   "Resources": {
+    "dataeduDMSVPCRole12E65ABC": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole"
+        ],
+        "RoleName": "dms-vpc-role"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSVPCRole/Resource"
+      }
+    },
     "dataeduDMSSourceRole55726A42": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -729,10 +753,7 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Fn::GetAtt": [
-                      "dataeduKMS6B3AB969",
-                      "Arn"
-                    ]
+                    "Ref": "dataeduKMS6B3AB969"
                   }
                 }
               },
@@ -847,10 +868,7 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Fn::GetAtt": [
-                      "dataeduKMS6B3AB969",
-                      "Arn"
-                    ]
+                    "Ref": "dataeduKMS6B3AB969"
                   }
                 }
               },
