@@ -753,10 +753,7 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Fn::GetAtt": [
-                      "dataeduKMS6B3AB969",
-                      "Arn"
-                    ]
+                    "Ref": "dataeduKMS6B3AB969"
                   }
                 }
               },
@@ -871,10 +868,7 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Fn::GetAtt": [
-                      "dataeduKMS6B3AB969",
-                      "Arn"
-                    ]
+                    "Ref": "dataeduKMS6B3AB969"
                   }
                 }
               },

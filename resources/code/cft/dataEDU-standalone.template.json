@@ -7,6 +7,30 @@
     },
   },
   "Resources": {
+    "dataeduDMSVPCRole12E65ABC": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole"
+        ],
+        "RoleName": "dms-vpc-role"
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSVPCRole/Resource"
+      }
+    },
     "dataeduDMSSourceRole55726A42": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -499,7 +523,8 @@
               "Sid": "Enable IAM User Permissions"
             }
           ],
-          "Version": "2012-10-17"
+          "Version": "2012-10-17",
+          "Id": "key-consolepolicy-3"
         },
         "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
         "EnableKeyRotation": false,
@@ -610,7 +635,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },
@@ -725,7 +753,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },
@@ -840,7 +871,10 @@
               "Condition": {
                 "StringNotLikeIfExists": {
                   "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                    "Ref": "dataeduKMS6B3AB969"
+                    "Fn::GetAtt": [
+                      "dataeduKMS6B3AB969",
+                      "Arn"
+                    ]
                   }
                 }
               },
