@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "UniqueID": {
+    "EETeamID": {
       "Type": "String",
       "Default": "12938128947124",
-      "Description": "Unique ID to generate S3 bucket names."
+      "Description": "Unique Event Engine per-Team GUID."
     },
   },
   "Resources": {
@@ -36,7 +36,7 @@
         "RoleName": "s360-dms-source-execution-role"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceRole/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSSourceRole/Resource"
       }
     },
     "dataeduDMSSourceRoleDefaultPolicy4D64F344": {
@@ -75,7 +75,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSSourceRole/DefaultPolicy/Resource"
       }
     },
     "dataeduDMSTargetRoleFF1FC64E": {
@@ -96,7 +96,7 @@
         "RoleName": "s360-dms-target-execution-role"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSTargetRole/Resource"
       }
     },
     "dataeduDMSTargetRoleDefaultPolicy58C5A871": {
@@ -164,7 +164,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSTargetRole/DefaultPolicy/Resource"
       }
     },
     "dataeduSISImportRole61DAD9FC": {
@@ -185,7 +185,7 @@
         "RoleName": "s360-sis-import-lambda-execution-role"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduSISImportRole/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduSISImportRole/Resource"
       }
     },
     "dataeduSISImportRoleDefaultPolicy7294368E": {
@@ -267,7 +267,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduSISImportRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduSISImportRole/DefaultPolicy/Resource"
       }
     },
     "dataeduLMSS3FetchRole16948341": {
@@ -288,7 +288,7 @@
         "RoleName": "s360-fetch-s3-lambda-role"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSS3FetchRole/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSS3FetchRole/Resource"
       }
     },
     "dataeduLMSS3FetchRoleDefaultPolicyE0083EF5": {
@@ -348,7 +348,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSS3FetchRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSS3FetchRole/DefaultPolicy/Resource"
       }
     },
     "dataeduLMSAPIFetchRoleE153F61C": {
@@ -369,7 +369,7 @@
         "RoleName": "s360-fetch-s3-data-role"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSAPIFetchRole/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSAPIFetchRole/Resource"
       }
     },
     "dataeduLMSAPIFetchRoleDefaultPolicy716C3933": {
@@ -470,7 +470,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSAPIFetchRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSAPIFetchRole/DefaultPolicy/Resource"
       }
     },
     "dataeduKMS6B3AB969": {
@@ -499,8 +499,7 @@
               "Sid": "Enable IAM User Permissions"
             }
           ],
-          "Version": "2012-10-17",
-          "Id": "key-consolepolicy-3"
+          "Version": "2012-10-17"
         },
         "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
         "EnableKeyRotation": false,
@@ -509,7 +508,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduKMS/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduKMS/Resource"
       }
     },
     "dataeduKMSAlias357469DC": {
@@ -524,7 +523,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduKMS/Alias/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduKMS/Alias/Resource"
       }
     },
     "dataeduRawBucket945ADDC3": {
@@ -551,7 +550,7 @@
             [
               "s360-raw-",
               {
-                "Ref": "UniqueID"
+                "Ref": "EETeamID"
               }
             ]
           ]
@@ -569,73 +568,79 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRawBucket/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRawBucket/Resource"
       }
     },
-    "dataeduRawBucketPolicy": {
+    "dataeduRawBucketPolicyEDC69BFC": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
-          "Bucket": {
-              "Ref": "dataeduRawBucket945ADDC3"
-          },
-          "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                  {
-                      "Sid": "DenySSE-S3",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduRawBucket945ADDC3"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringEquals": {
-                              "s3:x-amz-server-side-encryption": "AES256"
-                          }
-                      }
-                  },
-                  {
-                      "Sid": "RequireKMSEncryption",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduRawBucket945ADDC3"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringNotLikeIfExists": {
-                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                                  "Fn::GetAtt": [
-                                      "dataeduKMS6B3AB969",
-                                      "Arn"
-                                  ]
-                              }
-                          }
-                      }
+        "Bucket": {
+          "Ref": "dataeduRawBucket945ADDC3"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-server-side-encryption": "AES256"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduRawBucket945ADDC3",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringNotLikeIfExists": {
+                  "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                    "Ref": "dataeduKMS6B3AB969"
                   }
-              ]
-          }
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduRawBucket945ADDC3",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstackEE/dataeduRawBucket/Policy/Resource"
       }
-  },
+    },
     "dataeduCuratedBucket2AB663B1": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -660,7 +665,7 @@
             [
               "s360-curated-",
               {
-                "Ref": "UniqueID"
+                "Ref": "EETeamID"
               }
             ]
           ]
@@ -678,73 +683,79 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduCuratedBucket/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduCuratedBucket/Resource"
       }
     },
-    "dataeduCuratedBucketPolicy": {
+    "dataeduCuratedBucketPolicy25B1E0AF": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
-          "Bucket": {
-              "Ref": "dataeduCuratedBucket2AB663B1"
-          },
-          "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                  {
-                      "Sid": "DenySSE-S3",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduCuratedBucket2AB663B1"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringEquals": {
-                              "s3:x-amz-server-side-encryption": "AES256"
-                          }
-                      }
-                  },
-                  {
-                      "Sid": "RequireKMSEncryption",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduCuratedBucket2AB663B1"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringNotLikeIfExists": {
-                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                                  "Fn::GetAtt": [
-                                      "dataeduKMS6B3AB969",
-                                      "Arn"
-                                  ]
-                              }
-                          }
-                      }
+        "Bucket": {
+          "Ref": "dataeduCuratedBucket2AB663B1"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-server-side-encryption": "AES256"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduCuratedBucket2AB663B1",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringNotLikeIfExists": {
+                  "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                    "Ref": "dataeduKMS6B3AB969"
                   }
-              ]
-          }
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduCuratedBucket2AB663B1",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstackEE/dataeduCuratedBucket/Policy/Resource"
       }
-  },
+    },
     "dataeduResultsBucketBC9A3373": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
@@ -769,7 +780,7 @@
             [
               "s360-results-",
               {
-                "Ref": "UniqueID"
+                "Ref": "EETeamID"
               }
             ]
           ]
@@ -787,73 +798,79 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduResultsBucket/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduResultsBucket/Resource"
       }
     },
-    "dataeduResultsBucketPolicy": {
+    "dataeduResultsBucketPolicy7149F8C9": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
-          "Bucket": {
-              "Ref": "dataeduResultsBucketBC9A3373"
-          },
-          "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                  {
-                      "Sid": "DenySSE-S3",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduResultsBucketBC9A3373"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringEquals": {
-                              "s3:x-amz-server-side-encryption": "AES256"
-                          }
-                      }
-                  },
-                  {
-                      "Sid": "RequireKMSEncryption",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Action": "s3:PutObject",
-                      "Resource": {
-                          "Fn::Join": [
-                              "",
-                              [
-                                  "arn:aws:s3:::",
-                                  {
-                                      "Ref": "dataeduResultsBucketBC9A3373"
-                                  },
-                                  "/*"
-                              ]
-                          ]
-                      },
-                      "Condition": {
-                          "StringNotLikeIfExists": {
-                              "s3:x-amz-server-side-encryption-aws-kms-key-id": {
-                                  "Fn::GetAtt": [
-                                      "dataeduKMS6B3AB969",
-                                      "Arn"
-                                  ]
-                              }
-                          }
-                      }
+        "Bucket": {
+          "Ref": "dataeduResultsBucketBC9A3373"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-server-side-encryption": "AES256"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduResultsBucketBC9A3373",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringNotLikeIfExists": {
+                  "s3:x-amz-server-side-encryption-aws-kms-key-id": {
+                    "Ref": "dataeduKMS6B3AB969"
                   }
-              ]
-          }
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "dataeduResultsBucketBC9A3373",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "dataEDUstackEE/dataeduResultsBucket/Policy/Resource"
       }
-  },
+    },
     "dataeduVPCF752A41B": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
@@ -864,12 +881,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC"
+            "Value": "dataEDUstackEE/dataeduVPC"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/Resource"
       }
     },
     "dataeduVPCs360publicSubnet1Subnet97F726AF": {
@@ -899,12 +916,12 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/Subnet"
       }
     },
     "dataeduVPCs360publicSubnet1RouteTableACD97CEF": {
@@ -916,12 +933,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/RouteTable"
       }
     },
     "dataeduVPCs360publicSubnet1RouteTableAssociation9B8F5F55": {
@@ -935,7 +952,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/RouteTableAssociation"
       }
     },
     "dataeduVPCs360publicSubnet1DefaultRoute03CEAB01": {
@@ -953,7 +970,7 @@
         "dataeduVPCVPCGW8A53B470"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/DefaultRoute"
       }
     },
     "dataeduVPCs360publicSubnet1EIPF5A45EA7": {
@@ -963,12 +980,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/EIP"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/EIP"
       }
     },
     "dataeduVPCs360publicSubnet1NATGateway0A9F0B70": {
@@ -986,12 +1003,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet1/NATGateway"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/NATGateway"
       }
     },
     "dataeduVPCs360publicSubnet2SubnetF3693D59": {
@@ -1021,12 +1038,12 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/Subnet"
       }
     },
     "dataeduVPCs360publicSubnet2RouteTableD55D517F": {
@@ -1038,12 +1055,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/RouteTable"
       }
     },
     "dataeduVPCs360publicSubnet2RouteTableAssociation70199C90": {
@@ -1057,7 +1074,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/RouteTableAssociation"
       }
     },
     "dataeduVPCs360publicSubnet2DefaultRoute512EC40F": {
@@ -1075,7 +1092,7 @@
         "dataeduVPCVPCGW8A53B470"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/DefaultRoute"
       }
     },
     "dataeduVPCs360publicSubnet2EIP2C50AEB6": {
@@ -1085,12 +1102,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/EIP"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/EIP"
       }
     },
     "dataeduVPCs360publicSubnet2NATGatewayE84ACF10": {
@@ -1108,12 +1125,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-public-Subnet2/NATGateway"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/NATGateway"
       }
     },
     "dataeduVPCs360privateSubnet1Subnet3D3E93FE": {
@@ -1143,12 +1160,12 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-private-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet1/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/Subnet"
       }
     },
     "dataeduVPCs360privateSubnet1RouteTable1B765D81": {
@@ -1160,12 +1177,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-private-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet1/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/RouteTable"
       }
     },
     "dataeduVPCs360privateSubnet1RouteTableAssociation4790DD8E": {
@@ -1179,7 +1196,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet1/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/RouteTableAssociation"
       }
     },
     "dataeduVPCs360privateSubnet1DefaultRoute039F6079": {
@@ -1194,7 +1211,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet1/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/DefaultRoute"
       }
     },
     "dataeduVPCs360privateSubnet2SubnetC1604F60": {
@@ -1224,12 +1241,12 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-private-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet2/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/Subnet"
       }
     },
     "dataeduVPCs360privateSubnet2RouteTable065CE119": {
@@ -1241,12 +1258,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC/s360-private-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet2/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/RouteTable"
       }
     },
     "dataeduVPCs360privateSubnet2RouteTableAssociation624AF894": {
@@ -1260,7 +1277,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet2/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/RouteTableAssociation"
       }
     },
     "dataeduVPCs360privateSubnet2DefaultRoute2E275823": {
@@ -1275,7 +1292,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/s360-private-Subnet2/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/DefaultRoute"
       }
     },
     "dataeduVPCIGW1F5E0B85": {
@@ -1284,12 +1301,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstack/dataeduVPC"
+            "Value": "dataEDUstackEE/dataeduVPC"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/IGW"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/IGW"
       }
     },
     "dataeduVPCVPCGW8A53B470": {
@@ -1303,7 +1320,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduVPC/VPCGW"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/VPCGW"
       }
     },
     "dataEDURDSSecretA0904793": {
@@ -1319,7 +1336,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataEDURDSSecret/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataEDURDSSecret/Resource"
       }
     },
     "dataEDURDSSecretAttachment1F15340A": {
@@ -1334,7 +1351,7 @@
         "TargetType": "AWS::RDS::DBInstance"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataEDURDSSecret/Attachment/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataEDURDSSecret/Attachment/Resource"
       }
     },
     "dataeduRDSsg43029FA3": {
@@ -1353,10 +1370,10 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRDSsg/Resource"
       }
     },
-    "dataeduRDSsgfromdataEDUstackdataeduDMSsg5AC763263306C0846A2D": {
+    "dataeduRDSsgfromdataEDUstackEEdataeduDMSsg666009823306E1BF717F": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
@@ -1377,10 +1394,10 @@
         "ToPort": 3306
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduDMSsg5AC76326:3306"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRDSsg/from dataEDUstackEEdataeduDMSsg66600982:3306"
       }
     },
-    "dataeduRDSsgfromdataEDUstackdataeduLambdasg780D38EA330617729916": {
+    "dataeduRDSsgfromdataEDUstackEEdataeduLambdasgD7967E4133063FE64A8A": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "IpProtocol": "tcp",
@@ -1401,7 +1418,7 @@
         "ToPort": 3306
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSsg/from dataEDUstackdataeduLambdasg780D38EA:3306"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRDSsg/from dataEDUstackEEdataeduLambdasgD7967E41:3306"
       }
     },
     "dataeduDMSsg5B5997DA": {
@@ -1420,7 +1437,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSsg/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSsg/Resource"
       }
     },
     "dataeduLambdasg8559F486": {
@@ -1439,7 +1456,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLambdasg/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLambdasg/Resource"
       }
     },
     "dataeduRDSInstanceSubnetGroupEBC78F3D": {
@@ -1456,7 +1473,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSInstance/SubnetGroup/Default"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRDSInstance/SubnetGroup/Default"
       }
     },
     "dataeduRDSInstance2BB1EFE2": {
@@ -1508,7 +1525,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduRDSInstance/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduRDSInstance/Resource"
       }
     },
     "dataeduDMSSubnetGroup": {
@@ -1526,7 +1543,7 @@
         "ReplicationSubnetGroupIdentifier": "s360-replication-subnet-group"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSSubnetGroup"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSSubnetGroup"
       }
     },
     "dataeduDMSInstance": {
@@ -1546,7 +1563,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSInstance"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSInstance"
       }
     },
     "dataeduDMSSourceEndpoint": {
@@ -1567,7 +1584,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSSourceEndpoint"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSSourceEndpoint"
       }
     },
     "dataeduDMSTargetEndpoint": {
@@ -1589,7 +1606,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduDMSTargetEndpoint"
+        "aws:cdk:path": "dataEDUstackEE/dataeduDMSTargetEndpoint"
       }
     },
     "dataeduSISLambdaLayer2B86FA17": {
@@ -1616,7 +1633,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduSISLambdaLayer/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduSISLambdaLayer/Resource"
       }
     },
     "dataeduSISLambdaFunction754154E0": {
@@ -1759,7 +1776,7 @@
         "dataeduSISImportRole61DAD9FC"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduSISLambdaFunction/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduSISLambdaFunction/Resource"
       }
     },
     "dataeduSSMParam6F974C31": {
@@ -1786,7 +1803,7 @@
         "Name": "/s360/lms-demo/state"
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduSSMParam/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduSSMParam/Resource"
       }
     },
     "dataeduLMSS3FetchLambdaB561DBA8": {
@@ -1824,7 +1841,7 @@
         "dataeduLMSS3FetchRole16948341"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSS3FetchLambda/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSS3FetchLambda/Resource"
       }
     },
     "dataeduLMSAPIFetchLambdaBD421AD7": {
@@ -1862,14 +1879,14 @@
         "dataeduLMSAPIFetchRoleE153F61C"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduLMSAPIFetchLambda/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduLMSAPIFetchLambda/Resource"
       }
     },
     "dataeduEventBridgeRuleF5498C76": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "Description": "Invokes demo API on a scheduled basis",
-        "Name": "lmsapi-sync-schedule-halfhourly",
+        "Name": "s360-lmsapi-sync-schedule-halfhourly",
         "ScheduleExpression": "rate(1 minute)",
         "State": "DISABLED",
         "Targets": [
@@ -1885,10 +1902,10 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduEventBridgeRule/Resource"
+        "aws:cdk:path": "dataEDUstackEE/dataeduEventBridgeRule/Resource"
       }
     },
-    "dataeduEventBridgeRuleAllowEventRuledataEDUstackdataeduLMSAPIFetchLambda485702EBEAF0589F": {
+    "dataeduEventBridgeRuleAllowEventRuledataEDUstackEEdataeduLMSAPIFetchLambda7A54F1DB5834D1AF": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
@@ -1907,16 +1924,16 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/dataeduEventBridgeRule/AllowEventRuledataEDUstackdataeduLMSAPIFetchLambda485702EB"
+        "aws:cdk:path": "dataEDUstackEE/dataeduEventBridgeRule/AllowEventRuledataEDUstackEEdataeduLMSAPIFetchLambda7A54F1DB"
       }
     },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Sy27CMBD8Fu7GLSD1zqNFqFUVBcS12jhbahLbyA8QivLv9SOEtJV6mtndiT2e7JTO6OMILmbMympc84I2WwusIstPmYEGgRY18fOPhoOgTa5qDLOImao5u0ZpZC2phKHNK8ZegHnNwYQikpaYGW0WjlVoQ7NjCRZgsCXIprTZn1gY77MlyVzhT966QqZP7ixXzuIOiuQn9e+9uTGKcbBcyV4cyPMmC/AOdg0WL3AlmeZnT+8Hb6R/suc3QXLSVXPr0/kSKC3ZInOa2+taK3eKHv5tbORBowkZINNojQAJB9Q+71h3+sAS7EAf0A7u6wW/Jy3RpY99BRYKH+JGGguSIUlP6t2sFn8aN2lLyvDjQlB48nnH3H6pB5P+hhCoLE+KBxM1iKIE2rzBFfUetemy/1G/OMluP2XIM9SCmyDxARkRtlBzebiv4HAf/Zqc/bu949x16+ixbUmORjmdjA35UsmS23i4VCXSo3k4T57oZEYno6PhfKydtFwgzRN+A4bPjYMWAwAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU8CMRD9Ld5LFUm8AyohGrNZDFcz2x2xsm1JPyBks//dabuwiImneTN9nb6+mXs+4Xc3cHAjUW9Hjax4u/Igtmz+qQuwoNCjZSU6E6xARsSPVoLibWkajKQUC9NIcUx3EurYVjnevmCqxTBtJLiYJNAxN+HtLIgt+ljsUQ5Ds195TmbgsGMo7nm73olIWhdzVoSKOKtQ6dxvQKUJHt+hymJzfahNnTNCgpdGn8kRPC2LGN7AL8DjAY6ssHJPcGi81GQM4RMhK+mzqScPvxRqz1YogpX+uLAm7JKGfwtLvbHookEoLHqnQMMGLU0l5T0/ohzewW7QX7x3JlyfdMzWNJNH8FCRiUvtPGgaaf7SWc3j7E/hRO1YHacajcId+Z18u2JfnJxfiIbqemdkFNGAqmrg7Ssc0a7Rut77X/lz0OI0lEtcoFXSRQoZ5FTcVSv1ZljUy62lNdnTv0lxGfpdpdh1WWa/0ITnRtfSp57a1Mi/3e1+/MDHEz6++XZSjmzQXirkZY4/ntjiYjMDAAA="
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstack/CDKMetadata/Default"
+        "aws:cdk:path": "dataEDUstackEE/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
     }
