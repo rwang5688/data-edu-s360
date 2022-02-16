@@ -445,7 +445,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":rule/lmsapi-sync-schedule-halfhourly"
+                    ":rule/dataedu-lmsapi-sync-schedule-halfhourly"
                   ]
                 ]
               }
