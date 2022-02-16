@@ -33,7 +33,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "RoleName": "s360-dms-source-execution-role"
+        "RoleName": "dataedu-dms-source-execution-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduDMSSourceRole/Resource"
@@ -93,7 +93,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "RoleName": "s360-dms-target-execution-role"
+        "RoleName": "dataedu-dms-target-execution-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduDMSTargetRole/Resource"
@@ -182,7 +182,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "RoleName": "s360-sis-import-lambda-execution-role"
+        "RoleName": "dataedu-sis-import-lambda-execution-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduSISImportRole/Resource"
@@ -242,7 +242,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":function:s360-*"
+                    ":function:dataedu-*"
                   ]
                 ]
               }
@@ -285,7 +285,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "RoleName": "s360-fetch-s3-lambda-role"
+        "RoleName": "dataedu-fetch-s3-lambda-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduLMSS3FetchRole/Resource"
@@ -366,7 +366,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "RoleName": "s360-fetch-s3-data-role"
+        "RoleName": "dataedu-fetch-s3-data-role"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduLMSAPIFetchRole/Resource"
@@ -425,7 +425,7 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":function:s360-*"
+                    ":function:dataedu-*"
                   ]
                 ]
               }
@@ -515,7 +515,7 @@
     "dataeduKMSAlias357469DC": {
       "Type": "AWS::KMS::Alias",
       "Properties": {
-        "AliasName": "alias/s360-key",
+        "AliasName": "alias/dataedu-key",
         "TargetKeyId": {
           "Fn::GetAtt": [
             "dataeduKMS6B3AB969",
@@ -549,7 +549,7 @@
           "Fn::Join": [
             "",
             [
-              "s360-raw-",
+              "dataedu-raw-",
               {
                 "Ref": "EETeamID"
               }
@@ -667,7 +667,7 @@
           "Fn::Join": [
             "",
             [
-              "s360-curated-",
+              "dataedu-curated-",
               {
                 "Ref": "EETeamID"
               }
@@ -785,7 +785,7 @@
           "Fn::Join": [
             "",
             [
-              "s360-results-",
+              "dataedu-results-",
               {
                 "Ref": "EETeamID"
               }
@@ -899,7 +899,7 @@
         "aws:cdk:path": "dataEDUstackEE/dataeduVPC/Resource"
       }
     },
-    "dataeduVPCs360publicSubnet1Subnet97F726AF": {
+    "dataeduVPCdataedupublicSubnet1Subnet74067E1D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.0.0/24",
@@ -918,7 +918,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "s360-public-"
+            "Value": "dataedu-public-"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -926,15 +926,15 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/Subnet"
       }
     },
-    "dataeduVPCs360publicSubnet1RouteTableACD97CEF": {
+    "dataeduVPCdataedupublicSubnet1RouteTable35F12869": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -943,33 +943,33 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/RouteTable"
       }
     },
-    "dataeduVPCs360publicSubnet1RouteTableAssociation9B8F5F55": {
+    "dataeduVPCdataedupublicSubnet1RouteTableAssociationCD1DD092": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360publicSubnet1RouteTableACD97CEF"
+          "Ref": "dataeduVPCdataedupublicSubnet1RouteTable35F12869"
         },
         "SubnetId": {
-          "Ref": "dataeduVPCs360publicSubnet1Subnet97F726AF"
+          "Ref": "dataeduVPCdataedupublicSubnet1Subnet74067E1D"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/RouteTableAssociation"
       }
     },
-    "dataeduVPCs360publicSubnet1DefaultRoute03CEAB01": {
+    "dataeduVPCdataedupublicSubnet1DefaultRoute0CF23CE4": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360publicSubnet1RouteTableACD97CEF"
+          "Ref": "dataeduVPCdataedupublicSubnet1RouteTable35F12869"
         },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
@@ -980,48 +980,48 @@
         "dataeduVPCVPCGW8A53B470"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/DefaultRoute"
       }
     },
-    "dataeduVPCs360publicSubnet1EIPF5A45EA7": {
+    "dataeduVPCdataedupublicSubnet1EIPE4A597B7": {
       "Type": "AWS::EC2::EIP",
       "Properties": {
         "Domain": "vpc",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/EIP"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/EIP"
       }
     },
-    "dataeduVPCs360publicSubnet1NATGateway0A9F0B70": {
+    "dataeduVPCdataedupublicSubnet1NATGatewayFC94A3CB": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
         "SubnetId": {
-          "Ref": "dataeduVPCs360publicSubnet1Subnet97F726AF"
+          "Ref": "dataeduVPCdataedupublicSubnet1Subnet74067E1D"
         },
         "AllocationId": {
           "Fn::GetAtt": [
-            "dataeduVPCs360publicSubnet1EIPF5A45EA7",
+            "dataeduVPCdataedupublicSubnet1EIPE4A597B7",
             "AllocationId"
           ]
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet1/NATGateway"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet1/NATGateway"
       }
     },
-    "dataeduVPCs360publicSubnet2SubnetF3693D59": {
+    "dataeduVPCdataedupublicSubnet2SubnetA0439A03": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.1.0/24",
@@ -1040,7 +1040,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "s360-public-"
+            "Value": "dataedu-public-"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -1048,15 +1048,15 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/Subnet"
       }
     },
-    "dataeduVPCs360publicSubnet2RouteTableD55D517F": {
+    "dataeduVPCdataedupublicSubnet2RouteTableCB9C3A58": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -1065,33 +1065,33 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/RouteTable"
       }
     },
-    "dataeduVPCs360publicSubnet2RouteTableAssociation70199C90": {
+    "dataeduVPCdataedupublicSubnet2RouteTableAssociation7D7C3FBF": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360publicSubnet2RouteTableD55D517F"
+          "Ref": "dataeduVPCdataedupublicSubnet2RouteTableCB9C3A58"
         },
         "SubnetId": {
-          "Ref": "dataeduVPCs360publicSubnet2SubnetF3693D59"
+          "Ref": "dataeduVPCdataedupublicSubnet2SubnetA0439A03"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/RouteTableAssociation"
       }
     },
-    "dataeduVPCs360publicSubnet2DefaultRoute512EC40F": {
+    "dataeduVPCdataedupublicSubnet2DefaultRouteB34B072A": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360publicSubnet2RouteTableD55D517F"
+          "Ref": "dataeduVPCdataedupublicSubnet2RouteTableCB9C3A58"
         },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
@@ -1102,48 +1102,48 @@
         "dataeduVPCVPCGW8A53B470"
       ],
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/DefaultRoute"
       }
     },
-    "dataeduVPCs360publicSubnet2EIP2C50AEB6": {
+    "dataeduVPCdataedupublicSubnet2EIP3BD239AE": {
       "Type": "AWS::EC2::EIP",
       "Properties": {
         "Domain": "vpc",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/EIP"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/EIP"
       }
     },
-    "dataeduVPCs360publicSubnet2NATGatewayE84ACF10": {
+    "dataeduVPCdataedupublicSubnet2NATGateway23CEB395": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
         "SubnetId": {
-          "Ref": "dataeduVPCs360publicSubnet2SubnetF3693D59"
+          "Ref": "dataeduVPCdataedupublicSubnet2SubnetA0439A03"
         },
         "AllocationId": {
           "Fn::GetAtt": [
-            "dataeduVPCs360publicSubnet2EIP2C50AEB6",
+            "dataeduVPCdataedupublicSubnet2EIP3BD239AE",
             "AllocationId"
           ]
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-public-Subnet2/NATGateway"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-public-Subnet2/NATGateway"
       }
     },
-    "dataeduVPCs360privateSubnet1Subnet3D3E93FE": {
+    "dataeduVPCdataeduprivateSubnet1Subnet9F596219": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.2.0/24",
@@ -1162,7 +1162,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "s360-private-"
+            "Value": "dataedu-private-"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -1170,15 +1170,15 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1/Subnet"
       }
     },
-    "dataeduVPCs360privateSubnet1RouteTable1B765D81": {
+    "dataeduVPCdataeduprivateSubnet1RouteTable21FA07FF": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -1187,44 +1187,44 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1/RouteTable"
       }
     },
-    "dataeduVPCs360privateSubnet1RouteTableAssociation4790DD8E": {
+    "dataeduVPCdataeduprivateSubnet1RouteTableAssociation23478CDD": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360privateSubnet1RouteTable1B765D81"
+          "Ref": "dataeduVPCdataeduprivateSubnet1RouteTable21FA07FF"
         },
         "SubnetId": {
-          "Ref": "dataeduVPCs360privateSubnet1Subnet3D3E93FE"
+          "Ref": "dataeduVPCdataeduprivateSubnet1Subnet9F596219"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1/RouteTableAssociation"
       }
     },
-    "dataeduVPCs360privateSubnet1DefaultRoute039F6079": {
+    "dataeduVPCdataeduprivateSubnet1DefaultRoute3CF4A901": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360privateSubnet1RouteTable1B765D81"
+          "Ref": "dataeduVPCdataeduprivateSubnet1RouteTable21FA07FF"
         },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
-          "Ref": "dataeduVPCs360publicSubnet1NATGateway0A9F0B70"
+          "Ref": "dataeduVPCdataedupublicSubnet1NATGatewayFC94A3CB"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet1/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet1/DefaultRoute"
       }
     },
-    "dataeduVPCs360privateSubnet2SubnetC1604F60": {
+    "dataeduVPCdataeduprivateSubnet2SubnetB6573569": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.3.0/24",
@@ -1243,7 +1243,7 @@
         "Tags": [
           {
             "Key": "aws-cdk:subnet-name",
-            "Value": "s360-private-"
+            "Value": "dataedu-private-"
           },
           {
             "Key": "aws-cdk:subnet-type",
@@ -1251,15 +1251,15 @@
           },
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/Subnet"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2/Subnet"
       }
     },
-    "dataeduVPCs360privateSubnet2RouteTable065CE119": {
+    "dataeduVPCdataeduprivateSubnet2RouteTableED5F435F": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -1268,41 +1268,41 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2"
+            "Value": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/RouteTable"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2/RouteTable"
       }
     },
-    "dataeduVPCs360privateSubnet2RouteTableAssociation624AF894": {
+    "dataeduVPCdataeduprivateSubnet2RouteTableAssociationCE9DF74B": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360privateSubnet2RouteTable065CE119"
+          "Ref": "dataeduVPCdataeduprivateSubnet2RouteTableED5F435F"
         },
         "SubnetId": {
-          "Ref": "dataeduVPCs360privateSubnet2SubnetC1604F60"
+          "Ref": "dataeduVPCdataeduprivateSubnet2SubnetB6573569"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/RouteTableAssociation"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2/RouteTableAssociation"
       }
     },
-    "dataeduVPCs360privateSubnet2DefaultRoute2E275823": {
+    "dataeduVPCdataeduprivateSubnet2DefaultRoute59FC7D41": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "dataeduVPCs360privateSubnet2RouteTable065CE119"
+          "Ref": "dataeduVPCdataeduprivateSubnet2RouteTableED5F435F"
         },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
-          "Ref": "dataeduVPCs360publicSubnet2NATGatewayE84ACF10"
+          "Ref": "dataeduVPCdataedupublicSubnet2NATGateway23CEB395"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/s360-private-Subnet2/DefaultRoute"
+        "aws:cdk:path": "dataEDUstackEE/dataeduVPC/dataedu-private-Subnet2/DefaultRoute"
       }
     },
     "dataeduVPCIGW1F5E0B85": {
@@ -1341,7 +1341,7 @@
           "GenerateStringKey": "password",
           "SecretStringTemplate": "{\"username\":\"admin\"}"
         },
-        "Name": "s360-rds-secret"
+        "Name": "dataedu-rds-secret"
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -1475,10 +1475,10 @@
         "DBSubnetGroupDescription": "Subnet group for dataeduRDSInstance database",
         "SubnetIds": [
           {
-            "Ref": "dataeduVPCs360privateSubnet1Subnet3D3E93FE"
+            "Ref": "dataeduVPCdataeduprivateSubnet1Subnet9F596219"
           },
           {
-            "Ref": "dataeduVPCs360privateSubnet2SubnetC1604F60"
+            "Ref": "dataeduVPCdataeduprivateSubnet2SubnetB6573569"
           }
         ]
       },
@@ -1541,16 +1541,16 @@
     "dataeduDMSSubnetGroup": {
       "Type": "AWS::DMS::ReplicationSubnetGroup",
       "Properties": {
-        "ReplicationSubnetGroupDescription": "s360-replication-subnet-group",
+        "ReplicationSubnetGroupDescription": "dataedu-replication-subnet-group",
         "SubnetIds": [
           {
-            "Ref": "dataeduVPCs360privateSubnet1Subnet3D3E93FE"
+            "Ref": "dataeduVPCdataeduprivateSubnet1Subnet9F596219"
           },
           {
-            "Ref": "dataeduVPCs360privateSubnet2SubnetC1604F60"
+            "Ref": "dataeduVPCdataeduprivateSubnet2SubnetB6573569"
           }
         ],
-        "ReplicationSubnetGroupIdentifier": "s360-replication-subnet-group"
+        "ReplicationSubnetGroupIdentifier": "dataedu-replication-subnet-group"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduDMSSubnetGroup"
@@ -1752,7 +1752,7 @@
             }
           }
         },
-        "FunctionName": "s360-load-sisdb",
+        "FunctionName": "dataedu-load-sisdb",
         "Handler": "lambda_function.lambda_handler",
         "Layers": [
           {
@@ -1773,10 +1773,10 @@
           ],
           "SubnetIds": [
             {
-              "Ref": "dataeduVPCs360privateSubnet1Subnet3D3E93FE"
+              "Ref": "dataeduVPCdataeduprivateSubnet1Subnet9F596219"
             },
             {
-              "Ref": "dataeduVPCs360privateSubnet2SubnetC1604F60"
+              "Ref": "dataeduVPCdataeduprivateSubnet2SubnetB6573569"
             }
           ]
         }
@@ -1810,7 +1810,7 @@
           ]
         },
         "Description": "SSM Parameter for mock LMS integration.",
-        "Name": "/s360/lms-demo/state"
+        "Name": "/dataedu/lms-demo/state"
       },
       "Metadata": {
         "aws:cdk:path": "dataEDUstackEE/dataeduSSMParam/Resource"
@@ -1840,7 +1840,7 @@
           ]
         },
         "Description": "Lambda function that fetches a file from a URL and stores it in a S3 bucket",
-        "FunctionName": "s360-fetch-s3-data",
+        "FunctionName": "dataedu-fetch-s3-data",
         "Handler": "lambda_handler.lambda_handler",
         "MemorySize": 256,
         "Runtime": "python3.7",
@@ -1878,7 +1878,7 @@
           ]
         },
         "Description": "Lambda function that mimics invoking an API to obtain data from an SaaS app",
-        "FunctionName": "s360-fetch-lmsapi",
+        "FunctionName": "dataedu-fetch-lmsapi",
         "Handler": "lambda_function.lambda_handler",
         "MemorySize": 256,
         "Runtime": "python3.7",
@@ -1896,7 +1896,7 @@
       "Type": "AWS::Events::Rule",
       "Properties": {
         "Description": "Invokes demo API on a scheduled basis",
-        "Name": "s360-lmsapi-sync-schedule-halfhourly",
+        "Name": "dataedu-lmsapi-sync-schedule-halfhourly",
         "ScheduleExpression": "rate(1 minute)",
         "State": "DISABLED",
         "Targets": [
