@@ -15,6 +15,7 @@
                 "databrew:*",
                 "dataexchange:*",
                 "dms:*",
+                "ds:*",
                 "dynamodb:*",
                 "ec2:*",
                 "events:*",
