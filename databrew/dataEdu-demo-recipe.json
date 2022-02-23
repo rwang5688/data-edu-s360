@@ -1,0 +1,197 @@
+[
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "department_id",
+        "targetColumn": "fk_department_id"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "admit_semester_id",
+        "targetColumn": "fk_admit_semester_id"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "planned_grad_semester_id",
+        "targetColumn": "fk_planned_grad_semester_id"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "JOIN",
+      "Parameters": {
+        "joinKeys": "[{\"key\":\"fk_department_id\",\"value\":\"department_id\"}]",
+        "joinType": "INNER_JOIN",
+        "leftColumns": "[\"student_id\",\"first_name\",\"last_name\",\"gender\",\"birth_date\",\"email_address\",\"admitted\",\"enrolled\",\"parent_alum\",\"parent_highest_ed\",\"first_gen_hed_student\",\"high_school_gpa\",\"was_hs_athlete_ind\",\"home_state_name\",\"admit_type\",\"private_hs_indicator\",\"multiple_majors_indicator\",\"secondary_class_percentile\",\"fk_admit_semester_id\",\"first_year_gpa\",\"cumulative_gpa\",\"enroll_status\",\"fk_planned_grad_semester_id\"]",
+        "rightColumns": "[\"department_id\",\"department_name\",\"department_code\",\"school_id\"]",
+        "secondInput": "{\"DataCatalogInputDefinition\":{\"CatalogId\":\"024644086039\",\"DatabaseName\":\"s360\",\"TableName\":\"department\"}}",
+        "secondaryDatasetName": "department"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "JOIN",
+      "Parameters": {
+        "joinKeys": "[{\"key\":\"fk_admit_semester_id\",\"value\":\"semester_id\"}]",
+        "joinType": "INNER_JOIN",
+        "leftColumns": "[\"student_id\",\"first_name\",\"last_name\",\"gender\",\"birth_date\",\"email_address\",\"admitted\",\"enrolled\",\"parent_alum\",\"parent_highest_ed\",\"first_gen_hed_student\",\"high_school_gpa\",\"was_hs_athlete_ind\",\"home_state_name\",\"admit_type\",\"private_hs_indicator\",\"multiple_majors_indicator\",\"secondary_class_percentile\",\"first_year_gpa\",\"cumulative_gpa\",\"enroll_status\",\"fk_planned_grad_semester_id\",\"department_id\",\"department_name\",\"department_code\",\"school_id\"]",
+        "rightColumns": "[\"semester_id\",\"start_date\",\"end_date\",\"term_name\",\"semester_year\",\"school_year_name\"]",
+        "secondInput": "{\"DataCatalogInputDefinition\":{\"CatalogId\":\"024644086039\",\"DatabaseName\":\"s360\",\"TableName\":\"semester\"}}",
+        "secondaryDatasetName": "admit-semester"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "semester_id",
+        "targetColumn": "admit_semester_id"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "start_date",
+        "targetColumn": "admit_start_date"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "end_date",
+        "targetColumn": "admit_end_date"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "term_name",
+        "targetColumn": "admit_term_name"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "semester_year",
+        "targetColumn": "admit_semester_year"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "school_year_name",
+        "targetColumn": "admit_school_year_name"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "JOIN",
+      "Parameters": {
+        "joinKeys": "[{\"key\":\"fk_planned_grad_semester_id\",\"value\":\"semester_id\"}]",
+        "joinType": "INNER_JOIN",
+        "leftColumns": "[\"student_id\",\"first_name\",\"last_name\",\"gender\",\"birth_date\",\"email_address\",\"admitted\",\"enrolled\",\"parent_alum\",\"parent_highest_ed\",\"first_gen_hed_student\",\"high_school_gpa\",\"was_hs_athlete_ind\",\"home_state_name\",\"admit_type\",\"private_hs_indicator\",\"multiple_majors_indicator\",\"secondary_class_percentile\",\"first_year_gpa\",\"cumulative_gpa\",\"enroll_status\",\"fk_planned_grad_semester_id\",\"department_id\",\"department_name\",\"department_code\",\"school_id\",\"admit_semester_id\",\"admit_start_date\",\"admit_end_date\",\"admit_term_name\",\"admit_semester_year\",\"admit_school_year_name\"]",
+        "rightColumns": "[\"semester_id\",\"start_date\",\"end_date\",\"term_name\",\"semester_year\",\"school_year_name\"]",
+        "secondInput": "{\"DataCatalogInputDefinition\":{\"CatalogId\":\"024644086039\",\"DatabaseName\":\"s360\",\"TableName\":\"semester\"}}",
+        "secondaryDatasetName": "grad-semester"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "school_year_name",
+        "targetColumn": "grad_school_year_name"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "semester_year",
+        "targetColumn": "grad_semester_year"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "term_name",
+        "targetColumn": "grad_term_name"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "end_date",
+        "targetColumn": "grad_end_date"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "start_date",
+        "targetColumn": "grad_start_date"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "RENAME",
+      "Parameters": {
+        "sourceColumn": "semester_id",
+        "targetColumn": "grad_semester_id"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "JOIN",
+      "Parameters": {
+        "joinKeys": "[{\"key\":\"parent_highest_ed\",\"value\":\"ed_level_id\"}]",
+        "joinType": "INNER_JOIN",
+        "leftColumns": "[\"student_id\",\"first_name\",\"last_name\",\"gender\",\"birth_date\",\"email_address\",\"admitted\",\"enrolled\",\"parent_alum\",\"parent_highest_ed\",\"first_gen_hed_student\",\"high_school_gpa\",\"was_hs_athlete_ind\",\"home_state_name\",\"admit_type\",\"private_hs_indicator\",\"multiple_majors_indicator\",\"secondary_class_percentile\",\"first_year_gpa\",\"cumulative_gpa\",\"enroll_status\",\"fk_planned_grad_semester_id\",\"department_id\",\"department_name\",\"department_code\",\"school_id\",\"admit_semester_id\",\"admit_start_date\",\"admit_end_date\",\"admit_term_name\",\"admit_semester_year\",\"admit_school_year_name\",\"grad_semester_id\",\"grad_start_date\",\"grad_end_date\",\"grad_term_name\",\"grad_semester_year\",\"grad_school_year_name\"]",
+        "rightColumns": "[\"ed_level_code\",\"ed_level_desc\"]",
+        "secondInput": "{\"DataCatalogInputDefinition\":{\"CatalogId\":\"024644086039\",\"DatabaseName\":\"s360\",\"TableName\":\"ed_level\"}}",
+        "secondaryDatasetName": "ed-level"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "DELETE",
+      "Parameters": {
+        "sourceColumns": "[\"fk_planned_grad_semester_id\"]"
+      }
+    }
+  }
+]
