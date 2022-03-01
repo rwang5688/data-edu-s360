@@ -520,11 +520,11 @@
                 }
               },
               "Resource": "*",
-              "Sid": "Enable IAM User Permissions",
-              "Id": "key-consolepolicy-3"
+              "Sid": "Enable IAM User Permissions"
             }
           ],
-          "Version": "2012-10-17"
+          "Version": "2012-10-17",
+          "Id": "key-consolepolicy-3"
         },
         "Description": "KMS key to encrypt objects in the dataEDU S3 buckets.",
         "EnableKeyRotation": true,
