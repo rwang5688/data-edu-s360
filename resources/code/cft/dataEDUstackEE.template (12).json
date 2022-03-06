@@ -1513,8 +1513,8 @@
     "dataeduRDSInstance2BB1EFE2": {
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
-        "DBInstanceClass": "db.m5.large",
-        "AllocatedStorage": "100",
+        "DBInstanceClass": "db.t3.micro",
+        "AllocatedStorage": "50",
         "CopyTagsToSnapshot": true,
         "DBSubnetGroupName": {
           "Ref": "dataeduRDSInstanceSubnetGroupEBC78F3D"
@@ -1584,7 +1584,8 @@
     "dataeduDMSInstance": {
       "Type": "AWS::DMS::ReplicationInstance",
       "Properties": {
-        "ReplicationInstanceClass": "dms.t2.small",
+        "ReplicationInstanceClass": "dms.t3.micro",
+        "AllocatedStorage": "50",
         "ReplicationSubnetGroupIdentifier": {
           "Ref": "dataeduDMSSubnetGroup"
         },
