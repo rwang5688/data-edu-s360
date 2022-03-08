@@ -1586,7 +1586,7 @@
       "Type": "AWS::DMS::ReplicationInstance",
       "Properties": {
         "ReplicationInstanceClass": "dms.t3.micro",
-        "AllocatedStorage": 50,
+        "AllocatedStorage": "20",
         "ReplicationSubnetGroupIdentifier": {
           "Ref": "dataeduDMSSubnetGroup"
         },
