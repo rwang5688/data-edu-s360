@@ -14,7 +14,7 @@
       ],
       "ConstraintDescription": "Value must be set to true or false.",
       "Description": "Set this value to false if the 'dms-vpc-role' IAM Role has already been created in this AWS Account."
-    },
+    }
   },
   "Conditions": {
     "createDMSRoleCondition": {
@@ -2170,5 +2170,5 @@
       },
       "Condition": "CDKMetadataAvailable"
     }
-  },
+  }
 }
